@@ -13,8 +13,14 @@
     transform: scale(0.1)
 .v-slider__tick-label
     font-size: 0.8em
+    @media( max-width: 800px)
+        font-size: 0.4em
+    @media( max-width: 600px)
+        font-size: 0.3em
+    @media( max-width: 400px)
+        font-size: 0.2em
 .v-slider__thumb-label
-    background-color: #3264fe
+    background-color: rgba(92, 173, 234, 1)
     width: auto !important
     height: auto !important
     position: relative
@@ -48,3 +54,5 @@
     transform: rotate(0deg) !important
 .start-thumb-label
   transform: translateY(-64px) translateX(-50%) rotate(0deg) !important
+.v-slider--horizontal .v-slider__track-container
+    height: 6px

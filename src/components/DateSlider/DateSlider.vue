@@ -1,10 +1,10 @@
 <template>
     <v-row>
       <v-col
-      cols="auto"
+      cols="auto" class="checks"
       >
-        <h4 @click="changeToYears">Все года</h4>
-        <h4 @click="changeToMonthes">Месяца</h4>
+        <h4 class="check" :class="{active: isYearSlider}" @click="changeToYears">Все года</h4>
+        <h4 class="check" :class="{active: !isYearSlider}" @click="changeToMonthes">Месяца</h4>
       </v-col>
       <v-col cols="true" class="pa-12">
         <v-range-slider
@@ -21,18 +21,18 @@
         >
           <template v-slot:thumb-label="props">
             <v-icon dark>
-              {{ season(props.value) }}
+              {{ label(props.value) }}
             </v-icon>
           </template>
           <template v-slot:label="props">
-            {{ season(props.value) }}
+            {{ label(props.value) }}
           </template>
         </v-range-slider>
         <v-range-slider
         v-if="!isYearSlider"
         :tick-labels="seasons"
         v-model="range2"
-        value="range2"
+        value="distance2"
         min="0"
         :max="seasons.length-1"
         tick-size="4"
@@ -59,43 +59,13 @@ export default {
       isYearSlider: true,
       startDate: ['2014', '5'],
       endDate: ['2021', '9'],
-      startRangeDate: 0,
-      endRangeDate: 1,
+      startRangeDate: 15,
+      endRangeDate: 43,
       range1: [0, 1],
       range2: [0, 1],
-        seasons: [
-        '2017',
-        'февраль',
-        'март',
-        'апрель',
-        'май',
-        'июнь',
-        'июль',
-        'август',
-        'сентябрь',
-        'октябрь',
-        'ноябрь',
-        'декабрь',
-        '2018',
-        'февраль',
-        'март',
-        'апрель',
-        'май',
-        'июнь',
-        'июль',
-        'август',
-        'сентябрь',
-        'октябрь',
-        'ноябрь',
-        'декабрь',
-        '2019',
-        ],
-        icons: [
-        'mdi-snowflake',
-        'mdi-leaf',
-        'mdi-fire',
-        'mdi-water',
-        ],
+      distance2: [0, 1],
+      seasons: [],
+      fullSeasons: [],
         monthes: [
         'февраль',
         'март',
@@ -112,8 +82,11 @@ export default {
     }),
 
     methods: {
-        season (val) {
+        label (val) {
         return this.labels[val]
+        },
+        season (val) {
+        return this.fullSeasons[val]
         },
         rotateFirstLabel() {
           document.querySelector('.v-slider__thumb-label').classList.add('start-thumb-label')
@@ -122,9 +95,36 @@ export default {
           this.isYearSlider = true
           this.rotateFirstLabel()
         },
+        changeSeasons() {
+        let result = []
+        for (let i = this.labels[this.range1[0]].split(' ')[0]; i <= (Number(this.labels[this.range1[0]].split(' ')[0]) + 2); i++) {
+          result.push(i)
+          this.fullSeasons.push(i)
+          if (i !== (Number(this.labels[this.range1[0]].split(' ')[0]) + 2)) {
+            result.push(...this.monthes)
+          }
+        }
+        
+        this.seasons = result.map((item, index) => {
+          return (typeof(item) !=='number' && index>0) ? String(item).substr(0, 3) : item
+        })
+        let res = []
+        let num = Number(this.labels[this.range1[0]].split(' ')[0])
+        result.reduce((acc, item, index) => {
+          if (typeof(item)==='number') {
+            num = item
+            return res.push(`${item}`)
+          } else 
+          return res.push(`${num} ${item}`)
+
+        }, )
+        return this.fullSeasons = res
+
+      },
         changeToMonthes(){
           this.isYearSlider = false
           this.rotateFirstLabel()
+          this.changeSeasons()
         },
     },
     computed: {
@@ -158,12 +158,25 @@ export default {
             result.push(...this.monthes)
           }
         }
-        return result
-      }
+        let res = []
+        let num = start.getFullYear()
+        result.reduce((acc, item, index) => {
+          if (typeof(item)==='number') {
+            num = item
+            return res.push(`${item}`)
+          } else 
+          return res.push(`${num} ${item}`)
+
+        }, )
+        return res
+      },
+      changeRange1() {
+      return this.range1 = [this.startRangeDate, this.endRangeDate]
+      },
     },
     mounted() {
       this.rotateFirstLabel()
-    }
+    },
 }
 </script>
 
@@ -174,4 +187,21 @@ export default {
   width: 0 !important
 .start-thumb-label
   transform: rotate(180deg) !important
+.checks
+  padding: 100px 20px
+  line-height: 2
+  @media( max-width: 1000px)
+    padding: 100px 0 100px 20px
+.check
+  color: rgba(1, 103, 179, 1)
+  opacity: 0.5
+  cursor: pointer 
+  text-decoration-line: underline
+  text-underline-offset: 4px
+  text-decoration-thickness: 2px
+  @media( max-width: 1000px)
+    font-size: 0.5em
+.active
+  opacity: 1 !important
+  text-decoration: none
 </style>
