@@ -10,7 +10,7 @@
         <v-range-slider
           v-if="isYearSlider"
           :tick-labels="years"
-          :value="[0, 10]"
+          v-model="range1"
           min="0"
           :max="years.length-1"
           tick-size="4"
@@ -31,7 +31,8 @@
         <v-range-slider
         v-if="!isYearSlider"
         :tick-labels="seasons"
-        :value="[0, 1]"
+        v-model="range2"
+        value="range2"
         min="0"
         :max="seasons.length-1"
         tick-size="4"
@@ -58,6 +59,10 @@ export default {
       isYearSlider: true,
       startDate: ['2014', '5'],
       endDate: ['2021', '9'],
+      startRangeDate: 0,
+      endRangeDate: 1,
+      range1: [0, 1],
+      range2: [0, 1],
         seasons: [
         '2017',
         'февраль',
