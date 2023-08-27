@@ -1,11 +1,7 @@
 <template>
   <v-app>
     <v-main>
-      <input type="date" v-model="minDate">
-      <input type="date" v-model="maxDate">
       <DateSlider
-      :minDate="minDate"
-      :maxDate="maxDate"
       />
     </v-main>
   </v-app>
@@ -19,8 +15,7 @@ export default {
 
   data () {
     return {
-      minDate: '',
-      maxDate: ''
+
     }
   },
 
@@ -28,8 +23,5 @@ export default {
     DateSlider,
   },
 
-  data: () => ({
-    //
-  }),
 };
 </script>

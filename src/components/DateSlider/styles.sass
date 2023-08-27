@@ -12,4 +12,39 @@
 .v-slider__thumb-container--focused .v-slider__thumb::before
     transform: scale(0.1)
 .v-slider__tick-label
-    font-size: 0.5em
+    font-size: 0.8em
+.v-slider__thumb-label
+    background-color: #3264fe
+    width: auto !important
+    height: auto !important
+    position: relative
+    margin: auto
+    padding: 10px
+    border-radius: 5px
+    text-align: center
+    font-weight: 500
+    color: #ffffff
+    transform: translateY(24px) translateX(-50%) rotate(180deg) !important
+.v-slider__thumb-label
+    &::before
+        content: ""
+        position: absolute
+        height: 0
+        width: 0
+        border-top: 15px solid #3264fe
+        border-left: 15px solid transparent
+        border-right: 15px solid transparent
+        margin: auto
+        bottom: -14px
+        left: 0
+        right: 0
+.v-icon.v-icon
+    font-size: 10px
+.v-application .pa-12
+    padding: 100px 20px !important
+.v-slider--horizontal .v-slider__thumb-label > *
+    transform: rotate(180deg)
+.start-thumb-label > *
+    transform: rotate(0deg) !important
+.start-thumb-label
+  transform: translateY(-64px) translateX(-50%) rotate(0deg) !important

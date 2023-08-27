@@ -3,16 +3,16 @@
       <v-col
       cols="auto"
       >
-        <h4>Года</h4>
-        <h4>Года</h4>
+        <h4 @click="changeToYears">Все года</h4>
+        <h4 @click="changeToMonthes">Месяца</h4>
       </v-col>
       <v-col cols="true" class="pa-12">
         <v-range-slider
-          :tick-labels="seasons"
-          :value="[0, 1]"
+          v-if="isYearSlider"
+          :tick-labels="years"
+          :value="[0, 10]"
           min="0"
-          :max="seasons.length-1"
-          ticks="false"
+          :max="years.length-1"
           tick-size="4"
           thumb-label="always"
           track-color="rgba(237, 241, 248, 1)"
@@ -28,6 +28,25 @@
             {{ season(props.value) }}
           </template>
         </v-range-slider>
+        <v-range-slider
+        v-if="!isYearSlider"
+        :tick-labels="seasons"
+        :value="[0, 1]"
+        min="0"
+        :max="seasons.length-1"
+        tick-size="4"
+        thumb-label="always"
+        track-color="rgba(237, 241, 248, 1)"
+        track-size="10px"
+        class="range-slider"
+      >
+        <template class="endThumbLabel" v-slot:thumb-label="props">
+            {{ season(props.value) }}
+        </template>
+        <template v-slot:label="props">
+          {{ season(props.value) }}
+        </template>
+      </v-range-slider>
       </v-col>
     </v-row>
   </template>
@@ -36,15 +55,11 @@
 import styles from './styles.sass'
 export default {
     data: () => ({
+      isYearSlider: true,
+      startDate: ['2014', '5'],
+      endDate: ['2021', '9'],
         seasons: [
-        '2014',
-        '2015',
-        '2016',
         '2017',
-        '2018',
-        '2019',
-        '2020',
-        '2021',
         'февраль',
         'март',
         'апрель',
@@ -69,17 +84,6 @@ export default {
         'ноябрь',
         'декабрь',
         '2019',
-        'февраль',
-        'март',
-        'апрель',
-        'май',
-        'июнь',
-        'июль',
-        'август',
-        'сентябрь',
-        'октябрь',
-        'ноябрь',
-        'декабрь',
         ],
         icons: [
         'mdi-snowflake',
@@ -87,14 +91,74 @@ export default {
         'mdi-fire',
         'mdi-water',
         ],
+        monthes: [
+        'февраль',
+        'март',
+        'апрель',
+        'май',
+        'июнь',
+        'июль',
+        'август',
+        'сентябрь',
+        'октябрь',
+        'ноябрь',
+        'декабрь',
+        ]
     }),
 
     methods: {
         season (val) {
-        return this.icons[val]
+        return this.labels[val]
+        },
+        rotateFirstLabel() {
+          document.querySelector('.v-slider__thumb-label').classList.add('start-thumb-label')
+        },
+        changeToYears(){
+          this.isYearSlider = true
+          this.rotateFirstLabel()
+        },
+        changeToMonthes(){
+          this.isYearSlider = false
+          this.rotateFirstLabel()
         },
     },
-    props: ['minDate', 'maxDate'],
+    computed: {
+      yearsMassive() {
+        let start = new Date(...this.startDate)
+        let end = new Date(...this.endDate)
+        let result = []
+        for (let i = start.getFullYear(); i <= end.getFullYear(); i++) {
+          result.push(i)
+          if (i !== end.getFullYear()) {
+            result.push(...this.monthes)
+          }
+        }
+        return result
+      },
+      years() {
+        return this.yearsMassive.map(item => {
+          if (typeof(item) !== 'number') {
+            return ''
+          } else 
+          return item
+        })
+      },
+      labels () {
+        let start = new Date(...this.startDate)
+        let end = new Date(...this.endDate)
+        let result = []
+        for (let i = start.getFullYear(); i <= end.getFullYear(); i++) {
+          result.push(i)
+          if (i !== end.getFullYear()) {
+            result.push(...this.monthes)
+          }
+        }
+        return result
+      }
+    },
+    mounted() {
+      this.rotateFirstLabel()
+    }
 }
 </script>
 
@@ -103,4 +167,6 @@ export default {
     height: 10px
 .v-slider__tick
   width: 0 !important
+.start-thumb-label
+  transform: rotate(180deg) !important
 </style>
