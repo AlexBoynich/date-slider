@@ -16,10 +16,12 @@
           tick-size="4"
           thumb-label="always"
           track-color="rgba(237, 241, 248, 1)"
+          thumb-color="white"
           track-size="10px"
           class="range-slider"
         >
-          <template v-slot:thumb-label="props">
+          <template v-slot:thumb-label="props"
+          thumb="white">
             <v-icon dark>
               {{ label(props.value) }}
             </v-icon>
@@ -37,6 +39,7 @@
         :max="seasons.length-1"
         tick-size="4"
         thumb-label="always"
+        thumb-color="white"
         track-color="rgba(237, 241, 248, 1)"
         track-size="10px"
         class="range-slider"

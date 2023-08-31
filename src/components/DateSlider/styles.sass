@@ -1,3 +1,7 @@
+@font-face 
+    font-family: 'Raleway'
+    src: url(@/assets/fonts/Raleway-SemiBold.ttf)
+    font-weight: 600
 html
     overflow: hidden
 .v-slider__tick
@@ -6,7 +10,6 @@ html
     cursor: pointer !important
 .v-slider__thumb::before
     background: white
-    opacity: 1
 .v-slider__thumb-container:hover .v-slider__thumb::before
     transform: scale(0.1)
 .v-slider__thumb-container--active .v-slider__thumb::before
@@ -15,12 +18,16 @@ html
     transform: scale(0.1)
 .v-slider__tick-label
     font-size: 0.8em
+    font-family: 'Raleway'
+    font-weight: 600
+    color: rgba(153, 153, 153, 1)
     @media( max-width: 800px)
-        font-size: 0.4em
+        text-orientation: upright
+        writing-mode: vertical-lr
     @media( max-width: 600px)
-        font-size: 0.3em
+        font-size: 0.6em
     @media( max-width: 400px)
-        font-size: 0.2em
+        font-size: 0.5em
 .v-slider__thumb-label
     background-color: rgba(92, 173, 234, 1)
     width: auto !important
@@ -33,19 +40,26 @@ html
     font-weight: 500
     color: #ffffff
     transform: translateY(24px) translateX(-50%) rotate(180deg) !important
+    @media( max-width: 800px)
+        transform: translateY(64px) translateX(-50%) rotate(180deg) !important
 .v-slider__thumb-label
     &::before
         content: ""
         position: absolute
         height: 0
         width: 0
-        border-top: 7px solid #3264fe
+        border-top: 6px solid white
         border-left: 7px solid transparent
         border-right: 7px solid transparent
         margin: auto
         bottom: -6px
         left: 0
         right: 0
+.v-slider__thumb-label>div>i, .v-slider__thumb-label>div
+    font-family: 'Raleway'
+    font-weight: 600
+    color: rgba(92, 173, 234, 1) !important
+    font-size: 18px
 .v-icon.v-icon
     font-size: 10px
 .v-application .pa-12
@@ -55,6 +69,18 @@ html
 .start-thumb-label > *
     transform: rotate(0deg) !important
 .start-thumb-label
-  transform: translateY(-64px) translateX(-50%) rotate(0deg) !important
+  transform: translateY(-90px) translateX(-50%) rotate(0deg) !important
 .v-slider--horizontal .v-slider__track-container
     height: 6px
+.v-application .white
+    border: 3px solid rgba(92, 173, 234, 1) !important
+.v-slider__thumb-label-container>.v-slider__thumb-label
+    border: none !important
+    cursor: pointer
+    box-shadow: 0 1px 4px 0 rgba(0,0,0,.16)
+.v-icon.v-icon, .v-slider__thumb-labe>div
+    font-size: 18px
+.v-application .v-slider__track-container .primary
+    background-color: rgba(92, 173, 234, 1) !important
+.v-application--is-ltr .v-slider--horizontal .v-slider__tick:first-child .v-slider__tick-label, .v-application--is-ltr .v-slider--horizontal .v-slider__tick:last-child .v-slider__tick-label
+    transform: translateX(-50%)
