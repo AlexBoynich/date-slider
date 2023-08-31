@@ -57,14 +57,17 @@ import styles from './styles.sass'
 export default {
     data: () => ({
       isYearSlider: true,
-      startDate: ['2014', '5'],
-      endDate: ['2021', '9'],
+      date: {
+        startDate: ['2014', '5'],
+        endDate: ['2021', '9']
+      },
       startRangeDate: 15,
       endRangeDate: 43,
       range1: [0, 1],
       range2: [0, 1],
       distance2: [0, 1],
       seasons: [],
+      seasonsDistance: 2,
       fullSeasons: [],
         monthes: [
         'февраль',
@@ -82,6 +85,14 @@ export default {
     }),
 
     methods: {
+      getMonthes(start, end, result) {
+        for (let i = start.getFullYear(); i <= end.getFullYear(); i++) {
+          result.push(i)
+          if (i !== end.getFullYear()) {
+            result.push(...this.monthes)
+          }
+        }
+      },
         label (val) {
         return this.labels[val]
         },
@@ -96,11 +107,11 @@ export default {
           this.rotateFirstLabel()
         },
         changeSeasons() {
-        let result = []
+          const result = []
         for (let i = this.labels[this.range1[0]].split(' ')[0]; i <= (Number(this.labels[this.range1[0]].split(' ')[0]) + 2); i++) {
           result.push(i)
           this.fullSeasons.push(i)
-          if (i !== (Number(this.labels[this.range1[0]].split(' ')[0]) + 2)) {
+          if (i !== (Number(this.labels[this.range1[0]].split(' ')[0]) + this.seasonsDistance)) {
             result.push(...this.monthes)
           }
         }
@@ -108,7 +119,7 @@ export default {
         this.seasons = result.map((item, index) => {
           return (typeof(item) !=='number' && index>0) ? String(item).substr(0, 3) : item
         })
-        let res = []
+        const res = []
         let num = Number(this.labels[this.range1[0]].split(' ')[0])
         result.reduce((acc, item, index) => {
           if (typeof(item)==='number') {
@@ -117,7 +128,7 @@ export default {
           } else 
           return res.push(`${num} ${item}`)
 
-        }, )
+        }, 0)
         return this.fullSeasons = res
 
       },
@@ -129,36 +140,23 @@ export default {
     },
     computed: {
       yearsMassive() {
-        let start = new Date(...this.startDate)
-        let end = new Date(...this.endDate)
-        let result = []
-        for (let i = start.getFullYear(); i <= end.getFullYear(); i++) {
-          result.push(i)
-          if (i !== end.getFullYear()) {
-            result.push(...this.monthes)
-          }
-        }
+        const start = new Date(...this.date.startDate)
+        const end = new Date(...this.date.endDate)
+        const result = []
+        this.getMonthes(start, end, result)
         return result
       },
       years() {
         return this.yearsMassive.map(item => {
-          if (typeof(item) !== 'number') {
-            return ''
-          } else 
-          return item
+          return (typeof(item) !== 'number') ? '' : item
         })
       },
       labels () {
-        let start = new Date(...this.startDate)
-        let end = new Date(...this.endDate)
-        let result = []
-        for (let i = start.getFullYear(); i <= end.getFullYear(); i++) {
-          result.push(i)
-          if (i !== end.getFullYear()) {
-            result.push(...this.monthes)
-          }
-        }
-        let res = []
+        const start = new Date(...this.date.startDate)
+        const end = new Date(...this.date.endDate)
+        const result = []
+        this.getMonthes(start, end, result)
+        const res = []
         let num = start.getFullYear()
         result.reduce((acc, item, index) => {
           if (typeof(item)==='number') {
@@ -167,11 +165,8 @@ export default {
           } else 
           return res.push(`${num} ${item}`)
 
-        }, )
+        }, 0)
         return res
-      },
-      changeRange1() {
-      return this.range1 = [this.startRangeDate, this.endRangeDate]
       },
     },
     mounted() {
