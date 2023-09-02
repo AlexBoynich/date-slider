@@ -106,6 +106,9 @@ export default {
         changeToYears(){
           this.isYearSlider = true
           this.rotateFirstLabel()
+          document.querySelectorAll('.v-slider__tick-label').forEach(item => {
+            item.classList.toggle('specialTextForYears')
+          })
         },
         changeSeasons() {
           const result = []
@@ -118,7 +121,7 @@ export default {
         }
         
         this.seasons = result.map((item, index) => {
-          return (typeof(item) !=='number' && index>0) ? String(item).substr(0, 3) : item
+          return (typeof(item) !=='number' && index>0) ? String(item).substr(0, 3).toLowerCase() : item
         })
         const res = []
         console.log(this.labels[this.range1[0]].split(' ')[1])
@@ -139,6 +142,11 @@ export default {
           this.isYearSlider = false
           this.rotateFirstLabel()
           this.changeSeasons()
+          document.querySelectorAll('.v-slider__tick-label').forEach(item => {
+            if(Number(item.innerHTML) !== NaN) {
+              return item.classList.add('specialTextForYears')
+            } else return
+          })
         },
     },
     computed: {
@@ -198,4 +206,6 @@ export default {
 .active
   opacity: 1 !important
   text-decoration: none
+.specialTextForYears
+  font-size: 30px
 </style>
