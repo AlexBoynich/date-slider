@@ -60,10 +60,8 @@ import styles from './styles.sass'
 export default {
     data: () => ({
       isYearSlider: true,
-      date: {
-        startDate: ['2014', '5'],
-        endDate: ['2021', '9']
-      },
+      startDate: new Date ('2014-05-01'),
+      endDate: new Date('2021-09-01'),
       startRangeDate: 15,
       endRangeDate: 43,
       range1: [0, 1],
@@ -73,25 +71,25 @@ export default {
       seasonsDistance: 2,
       fullSeasons: [],
         monthes: [
-        'февраль',
-        'март',
-        'апрель',
-        'май',
-        'июнь',
-        'июль',
-        'август',
-        'сентябрь',
-        'октябрь',
-        'ноябрь',
-        'декабрь',
+        'Февраль',
+        'Март',
+        'Апрель',
+        'Май',
+        'Июнь',
+        'Июль',
+        'Август',
+        'Сентябрь',
+        'Октябрь',
+        'Ноябрь',
+        'Декабрь',
         ]
     }),
 
     methods: {
       getMonthes(start, end, result) {
-        for (let i = start.getFullYear(); i <= end.getFullYear(); i++) {
+        for (let i = this.startDate.getFullYear(); i <= end.getFullYear(); i++) {
           result.push(i)
-          if (i !== end.getFullYear()) {
+          if (i !== this.endDate.getFullYear()) {
             result.push(...this.monthes)
           }
         }
@@ -111,10 +109,10 @@ export default {
         },
         changeSeasons() {
           const result = []
-        for (let i = this.labels[this.range1[0]].split(' ')[0]; i <= (Number(this.labels[this.range1[0]].split(' ')[0]) + 2); i++) {
+        for (let i = this.labels[this.range1[0]].split(' ')[1]; i <= (Number(this.labels[this.range1[0]].split(' ')[1]) + 2); i++) {
           result.push(i)
           this.fullSeasons.push(i)
-          if (i !== (Number(this.labels[this.range1[0]].split(' ')[0]) + this.seasonsDistance)) {
+          if (i !== (Number(this.labels[this.range1[0]].split(' ')[1]) + this.seasonsDistance)) {
             result.push(...this.monthes)
           }
         }
@@ -123,15 +121,17 @@ export default {
           return (typeof(item) !=='number' && index>0) ? String(item).substr(0, 3) : item
         })
         const res = []
-        let num = Number(this.labels[this.range1[0]].split(' ')[0])
-        result.reduce((acc, item, index) => {
+        console.log(this.labels[this.range1[0]].split(' ')[1])
+        let num = Number(this.labels[this.range1[0]].split(' ')[1])
+        result.forEach((item) => {
           if (typeof(item)==='number') {
             num = item
-            return res.push(`${item}`)
+            return res.push(`Январь ${item}`)
           } else 
-          return res.push(`${num} ${item}`)
+          return res.push(`${item} ${num}`)
 
-        }, 0)
+        })
+        res[0] = `Январь ${this.labels[this.range1[0]].split(' ')[1]}`
         return this.fullSeasons = res
 
       },
@@ -143,10 +143,8 @@ export default {
     },
     computed: {
       yearsMassive() {
-        const start = new Date(...this.date.startDate)
-        const end = new Date(...this.date.endDate)
         const result = []
-        this.getMonthes(start, end, result)
+        this.getMonthes(this.startDate, this.endDate, result)
         return result
       },
       years() {
@@ -155,20 +153,18 @@ export default {
         })
       },
       labels () {
-        const start = new Date(...this.date.startDate)
-        const end = new Date(...this.date.endDate)
         const result = []
-        this.getMonthes(start, end, result)
+        this.getMonthes(this.startDate, this.endDate, result)
         const res = []
-        let num = start.getFullYear()
-        result.reduce((acc, item, index) => {
+        let num = this.startDate.getFullYear()
+        result.forEach((item) => {
           if (typeof(item)==='number') {
             num = item
-            return res.push(`${item}`)
+            return res.push(`Январь ${item}`)
           } else 
-          return res.push(`${num} ${item}`)
+          return res.push(`${item} ${num}`)
 
-        }, 0)
+        })
         return res
       },
     },
